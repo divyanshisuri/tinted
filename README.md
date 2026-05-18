@@ -7,28 +7,22 @@ The goal of Tinted is to make beauty feel more personal, simple, and useful by h
 ## Preview
 
 ### Home
-
-![Home Screen](preview/Home.png)
+<img src="preview/Home.png" width="250">
 
 ### Discover
-
-![Discover Screen](preview/discover.png)
+<img src="preview/discover.png" width="250">
 
 ### Live
-
-![Live Screen](preview/live.png)
+<img src="preview/live.png" width="250">
 
 ### Profile
-
-![Profile Screen](preview/profile.png)
+<img src="preview/profile.png" width="250">
 
 ### Routine
-
-![Routine Screen](preview/routine.png)
+<img src="preview/routine.png" width="250">
 
 ### Scan
-
-![Scan Screen](preview/scan.png)
+<img src="preview/scan.png" width="250">
 
 ## What's Built
 
