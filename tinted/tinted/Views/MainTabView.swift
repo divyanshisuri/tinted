@@ -11,6 +11,8 @@ struct MainTabView: View {
                 .tabItem { Label("Live", systemImage: "play.circle") }
             ScanView()
                 .tabItem { Label("Scan", systemImage: "camera.viewfinder") }
+            RoutineView()
+                .tabItem { Label("Routine", systemImage: "calendar") }
             MeView()
                 .tabItem { Label("Me", systemImage: "person") }
         }
