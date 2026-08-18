@@ -7,8 +7,8 @@ struct MainTabView: View {
                 .tabItem { Label("Home", systemImage: "house") }
             DiscoverView()
                 .tabItem { Label("Discover", systemImage: "magnifyingglass") }
-            LiveView()
-                .tabItem { Label("Live", systemImage: "play.circle") }
+            FeedView()
+                .tabItem { Label("Feed", systemImage: "bubble.left.and.bubble.right") }
             ScanView()
                 .tabItem { Label("Scan", systemImage: "camera.viewfinder") }
             RoutineView()

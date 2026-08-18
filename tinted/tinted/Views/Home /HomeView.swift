@@ -2,22 +2,99 @@ import SwiftUI
 
 struct HomeView: View {
     let products = Product.todayPicks
+    let productOfTheWeek = Product.productOfTheWeek
+    let tip = WeeklyTip.thisWeek
+    @StateObject private var weatherManager = SkinWeatherManager()
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 32) {
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Today for you")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
-                        Text("Medium neutral · combo skin")
-                            .font(.system(size: 13))
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Product of the week")
+                            .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                            .textCase(.uppercase)
+                            .tracking(0.5)
+
+                        NavigationLink(destination: ProductDetailView(product: productOfTheWeek)) {
+                            HStack(spacing: 14) {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(red: 0.94, green: 0.91, blue: 0.87))
+                                    .frame(width: 56, height: 56)
+                                    .overlay(
+                                        Image(systemName: "sparkles")
+                                            .font(.system(size: 20))
+                                            .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
+                                    )
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(productOfTheWeek.name)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
+                                    Text("\(productOfTheWeek.brand) · matched with \(productOfTheWeek.fitScore)% of users with your skin type")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                            }
+                            .padding(16)
+                            .background(Color(red: 0.98, green: 0.97, blue: 0.95))
+                            .cornerRadius(20)
+                        }
+                        .buttonStyle(.plain)
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
+
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Text("Skin weather index")
+                                .font(.system(size: 17, weight: .semibold))
+                                .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
+                            Spacer()
+                            Text(weatherManager.index.locationName)
+                                .font(.system(size: 12))
+                                .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                        }
+                        .padding(.horizontal, 20)
+
+                        HStack(spacing: 14) {
+                            ZStack {
+                                Circle()
+                                    .stroke(Color(red: 0.90, green: 0.87, blue: 0.82), lineWidth: 6)
+                                Circle()
+                                    .trim(from: 0, to: CGFloat(weatherManager.index.score) / 100)
+                                    .stroke(
+                                        Color(red: 0.07, green: 0.07, blue: 0.07),
+                                        style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                                    )
+                                    .rotationEffect(.degrees(-90))
+                                Text("\(weatherManager.index.score)")
+                                    .font(.system(size: 15, weight: .bold))
+                                    .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
+                            }
+                            .frame(width: 48, height: 48)
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("UV \(weatherManager.index.uvIndex) · Humidity \(weatherManager.index.humidityPercent)%")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
+                                Text(weatherManager.index.advisory)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            Spacer()
+                        }
+                        .padding(16)
+                        .background(Color(red: 0.98, green: 0.97, blue: 0.95))
+                        .cornerRadius(20)
+                        .padding(.horizontal, 20)
+                    }
 
                     VStack(alignment: .leading, spacing: 16) {
                         HStack {
@@ -66,32 +143,30 @@ struct HomeView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Live now")
+                        Text("Weekly skin tip")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
                             .padding(.horizontal, 20)
 
                         HStack(spacing: 14) {
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(red: 0.07, green: 0.07, blue: 0.07))
+                                .fill(Color(red: 0.94, green: 0.91, blue: 0.87))
                                 .frame(width: 56, height: 56)
                                 .overlay(
-                                    Text("LIVE")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(.white)
+                                    Image(systemName: "lightbulb.fill")
+                                        .font(.system(size: 18))
+                                        .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
                                 )
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Foundation launch test")
+                                Text(tip.title)
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(Color(red: 0.07, green: 0.07, blue: 0.07))
-                                Text("Medium neutral skin · 1.2k watching")
+                                Text(tip.body)
                                     .font(.system(size: 12))
                                     .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                             Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 13))
-                                .foregroundColor(Color(red: 0.60, green: 0.57, blue: 0.53))
                         }
                         .padding(16)
                         .background(Color(red: 0.98, green: 0.97, blue: 0.95))
@@ -104,6 +179,9 @@ struct HomeView: View {
             }
             .background(Color(red: 0.97, green: 0.95, blue: 0.93))
             .navigationTitle("Tinted")
+            .onAppear {
+                weatherManager.requestIndex()
+            }
         }
     }
 }

@@ -122,4 +122,13 @@ extension Product {
     ]
 
     static let todayPicks: [Product] = Array(mockProducts.prefix(3))
+
+    // Candidates a "product of the week" pick rotates through, so it alternates
+    // rather than showing the same match every time.
+    static let weeklyMatchCandidates: [Product] = [mockProducts[3], mockProducts[1], mockProducts[0]]
+
+    static var productOfTheWeek: Product {
+        let week = Calendar.current.component(.weekOfYear, from: Date())
+        return weeklyMatchCandidates[week % weeklyMatchCandidates.count]
+    }
 }
