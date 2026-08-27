@@ -20,9 +20,9 @@ Five tabs share a single `AppStore`, an `ObservableObject` that every tab reads 
 
 | Model | Key Fields | Notes |
 |---|---|---|
-| Product | id, name, brandId, category, price, rating, fitScore, isRoutineSafe, keyNotes | 102 products in the catalog. `category` is a real enum (`.makeup` / `.skincare`), not a string. |
-| Brand | id, name, description, foundedYear, topProductIds | 43 brands. Every product's `brandId` resolves to a real brand, checked, not assumed. |
-| Ingredient | id, name, type, shortDescription, fullDescription, isCaution, commonUses | 50 ingredients, split between everyday actives and caution-flagged ones (retinol, salicylic acid, fragrance, etc.), used to generate per-product warnings. |
+| Product | id, name, brandId, category, price, rating, fitScore, isRoutineSafe, keyNotes | 100 products in the catalog. `category` is a real enum (`.makeup` / `.skincare`), not a string. |
+| Brand | id, name, description, foundedYear, topProductIds | 150 brands. Every product's `brandId` resolves to a real brand, checked, not assumed. |
+| Ingredient | id, name, type, shortDescription, fullDescription, isCaution, commonUses | 200 ingredients, split between everyday actives and caution-flagged ones (retinol, salicylic acid, fragrance, etc.), used to generate per-product warnings. |
 | AppStore | saved/owned product IDs, written reviews, community threads, follow items, followers/following | The single shared store every tab reads and writes. This is what makes the app feel connected rather than five separate screens. |
 
 ### Component System
@@ -91,3 +91,89 @@ A full profile, not a settings shortcut.
 - Stat row: Posts, Followers, Following, Likes. Followers and Following are tappable into a real list with a native segmented control, follow/unfollow toggles, and tap-through to a public profile
 - Achievements row computed from real state, unlocking based on actual review, post, and shelf counts rather than decoratively
 - Four tabs: Posts (reviews written plus threads started), Shelf (a photo grid of saved/owned products pulling live from the shared store), Routine (links to the full Routine page), Likes (posts liked in Feed)
+
+### Product Detail
+
+Pushed from anywhere a product appears.
+
+- Image, name, tappable brand name, price, rating
+- Fit-score block: numeral, routine-safe badge, and progress bar
+- Key-note tags, description, and three or more varied reviews pulled from a category-aware pool
+- Three actions: add to shelf, add to routine (opens a real scheduling sheet), write a review
+
+### Write a Review
+
+- Star rating selector and shade-used field
+- Written review text area
+- Skin type, tone, and wear experience tag selectors
+- Repurchase yes/no option
+- Publish button that only activates once rating and review are filled
+
+### Brand Detail
+
+Pushed from any brand name.
+
+- Brand name, founding year, description paragraph
+- "Top products" grid pulled from that brand's catalog
+- Reached from the underlined, tappable brand name on a product card or product page
+
+### Settings
+
+Reached from Me's gear icon.
+
+- Account info and change password
+- Two-factor authentication
+- Light/dark/system appearance picker that re-themes the whole app
+- Five notification toggles, privacy, support links, and log out / delete account
+
+### Routine
+
+Reached from Home and Me.
+
+- Today / Week toggle
+- Today view: AM and PM checklists with a routine-safety warning banner
+- Week view: 7-day strip with conflict-avoidance and SPF-streak stats
+- Recovery night warning banner
+- "Add product" sheet to schedule any catalog product into AM/PM at a chosen frequency
+
+### Live
+
+- Live now horizontal scroll with viewer count
+- Upcoming sessions with a Remind me button
+- Watch replays section
+- Full live session detail page with video area, comments, pinned product, and comment input
+
+## Design System
+
+Editorial, flat, single accent. No gradients, no drop shadows, no rounded corners. Every surface is either flat color or a hairline border. Condensed bold caps carry headline identity; small tracked caps carry metadata. One dark green is the only accent, reserved for match scores, CTAs, and high-emphasis chips.
+
+| Token | Value |
+|---|---|
+| Background | #F0EEE7 |
+| Section | #E4E1D9 |
+| Placeholder | #DFDBD3 |
+| Ink | #1A1A18 |
+| Muted | #8A867D |
+| Border | #D5D1C8 |
+| Accent | #2C3A2A |
+
+Additional conventions:
+
+- Body copy runs in Inter at 15-16px, a plain humanist face that stays out of the way of the condensed display type used for identity
+- Rectangular badges and buttons, never pill-shaped
+- Sections are separated by tone shift or hairline, never a shadowed card
+- Green appears only for fit scores, CTAs, and routine-safe signals
+- Icons are line icons; fills are reserved for on/off state (liked, saved)
+- Score numerals are oversized and condensed, right-aligned against a stacked label
+- Full dark mode, with every token given a matching dark counterpart rather than a simple inversion
+- Condensed display type uses SF's built-in condensed width axis in the real SwiftUI app, requiring no bundled font
+
+## Tech Stack
+
+- SwiftUI
+- `ObservableObject`-driven shared state layer (`AppStore`) powering all five tabs
+- Structured data models with real referential integrity between products, brands, and ingredients
+
+## Why I Built This
+
+I built Tinted because beauty apps often feel too generic. A product can work perfectly for one person and completely fail for another because of skin type, skin tone, ingredients, routine conflicts, or personal goals. Tinted gives users a more personalized way to discover, scan, review, and organize beauty products, instead of guessing through endless options.
